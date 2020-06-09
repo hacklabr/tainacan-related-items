@@ -11,10 +11,17 @@
 
 .related-items--wrapper {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     grid-gap: 1.250rem;
 }
 
+.item .item--image {
+    width: 100%;
+}
+
+.item .item--image img {
+    width: 100%;
+}
 
 .item .item--title {
     font-size: var(--tainacan-base-font-size);
