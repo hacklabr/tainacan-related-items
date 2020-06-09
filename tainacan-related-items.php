@@ -10,14 +10,23 @@ License:     GPL2
 
 class TainacanRelatedItems
 {
-
     protected static $instance = null;
 
     public function __construct()
     {
         self::$instance = $this;
+
+        // Actions
+        // Register admin page/panels
         add_action('admin_menu', [$this, 'register_admin_page'], 100);
         add_action('admin_menu', [$this, 'register_admin_page_settings'], 100);
+
+        // Add related itens section single
+        add_action('get_footer', [$this, 'add_related_itens_above_footer'], 100);
+
+        // Add styles to related items
+        add_action('wp_enqueue_scripts', [$this, 'register_styles']);
+    
     }
 
     public static function getInstance()
@@ -226,7 +235,7 @@ class TainacanRelatedItems
         ORDER BY rating DESC, RAND()
         LIMIT $num";
 
-        echo "<pre>$sql</pre>";
+        //echo "<pre>$sql</pre>";
         $result = $wpdb->get_results($sql);
 
         $ids = array_map(function ($el) {
@@ -270,6 +279,46 @@ class TainacanRelatedItems
         $params = $this->get_items_query_params($term_id, $num);
         return get_posts($params);
     }
+
+    function add_related_itens_above_footer() {
+        $collections_post_types = \Tainacan\Repositories\Repository::get_collections_db_identifiers();
+        $current_post_type = get_post_type();
+			
+        if (in_array($current_post_type, $collections_post_types)) {
+            $items = $this->get_items(); ?>
+            
+            <div class="row related-items">
+                <div class="related-items--wrapper">
+            
+            <?php
+            foreach ($items as $item) { ?>
+                <div class="item">
+                    <a href="<?= get_the_permalink($item->ID) ?>">
+                        <div class="item--title">
+                            <?= get_the_title($item->ID) ?>
+                        </div>
+                        <div class="item--image">
+                            <?php if ( has_post_thumbnail($item->ID) ): ?>
+                                <?= get_the_post_thumbnail($item->ID, 'tainacan-medium', array('class' => 'mr-4')); ?>
+                            <?php else: ?>
+                                <?php echo '<div class="mr-4"><img alt="Thumbnail placeholder" src="'.get_stylesheet_directory_uri().'/assets/images/thumbnail_placeholder.png"></div>'?>
+                            <?php endif; ?>  
+                        </div>
+                    </a>
+                </div>
+                
+            <?php } ?>
+                </div>
+            </div>
+
+            <?php
+        }
+    }
+
+    function register_styles(){
+        wp_enqueue_style( 'related_items', plugins_url( 'assets/style.css' , __FILE__ ) );
+    }
+
 }
 
 TainacanRelatedItems::getInstance();

@@ -1,0 +1,13 @@
+.related-items--wrapper {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 1.250rem;
+    padding: 0 .625rem;
+}
+
+.item .item--title {
+    font-size: var(--tainacan-base-font-size);
+    color:     var(--tainacan-secondary);
+    background-color: var(--tainacan-primary);
+    padding: 12px;
+}
