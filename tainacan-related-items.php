@@ -288,7 +288,7 @@ class TainacanRelatedItems
             $items = $this->get_items(); ?>
             
             <div class="row related-items">
-                <h3> Related items </h3>
+                <h3> Itens relacionados </h3>
                 <div class="related-items--wrapper">
             
             <?php
