@@ -288,12 +288,13 @@ class TainacanRelatedItems
             $items = $this->get_items(); ?>
             
             <div class="row related-items">
+                <h3> Related items </h3>
                 <div class="related-items--wrapper">
             
             <?php
             foreach ($items as $item) { ?>
                 <div class="item">
-                    <a href="<?= get_the_permalink($item->ID) ?>">
+                    <a href="<?= get_the_permalink($item->ID) ?>" class="item--link">
                         <div class="item--title">
                             <?= get_the_title($item->ID) ?>
                         </div>
