@@ -109,10 +109,10 @@ class TainacanRelatedItems
         return $taxonomies;
     }
 
-    public function get_post_taxonomy_terms($post_id, $taxonomy)
+    public function get_item_taxonomy_terms($item_id, $taxonomy)
     {
 
-        $_terms = get_the_terms($post_id, $taxonomy) ?: [];
+        $_terms = get_the_terms($item_id, $taxonomy) ?: [];
 
         $_terms = array_map(function ($el) {
             return $el->term_taxonomy_id;
@@ -147,7 +147,7 @@ class TainacanRelatedItems
     {
         global $wpdb;
 
-        $terms = $this->get_post_taxonomy_terms($item_id, $taxonomy);
+        $terms = $this->get_item_taxonomy_terms($item_id, $taxonomy);
 
         $taxonomy_sql = "
             (
