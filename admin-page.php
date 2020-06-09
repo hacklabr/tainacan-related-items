@@ -85,7 +85,8 @@ $collection_names = array_map(function ($coll) { return $coll->get_db_identifier
         foreach($collections as $collection): 
             $collection_id = $collection->get_db_identifier();
             $taxonomies = $this->get_collection_taxonomies($collection);
-            $enabled_collections = $options ? $options[$collection_id]['collections'] : $collection_names;
+            $enabled_collections = isset($options[$collection_id]['collections']) && is_array($options[$collection_id]['collections']) ? 
+                $options[$collection_id]['collections'] : $collection_names;
             ?>
             <section class="collection">
                 <h2>
