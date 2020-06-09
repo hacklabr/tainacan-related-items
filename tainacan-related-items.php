@@ -292,7 +292,7 @@ class TainacanRelatedItems
         $collections_post_types = \Tainacan\Repositories\Repository::get_collections_db_identifiers();
         $current_post_type = get_post_type();
 			
-        if (in_array($current_post_type, $collections_post_types)) {
+        if (in_array($current_post_type, $collections_post_types) && is_single()) {
             $items = $this->get_items(); ?>
             
             <div class="row related-items">
