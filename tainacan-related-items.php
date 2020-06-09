@@ -109,24 +109,31 @@ class TainacanRelatedItems
         return $taxonomies;
     }
 
-    public function get_post_taxonomy_terms($post_id, $taxonomy)
+    /**
+     * Return the ids of the terms that are attached to the item, or -1  
+     *
+     * @param integer $item_id
+     * @param string $taxonomy
+     * @return string Comma separated ids of the terms or -1 if there are no terms
+     */
+    public function get_item_taxonomy_terms($item_id, $taxonomy)
     {
 
-        $_terms = get_the_terms($post_id, $taxonomy) ?: [];
+        $_terms = get_the_terms($item_id, $taxonomy) ?: [];
 
         $_terms = array_map(function ($el) {
             return $el->term_taxonomy_id;
         }, $_terms);
 
         $result = implode(',', $_terms);
-        return $result ?: -1;
+        return $result ?: '-1';
     }
 
     /**
      * Return the configuration for the collection
      *
      * @param item $collection_post_type
-     * @return void
+     * @return array the configuration for the collection
      */
     public function get_config($collection_post_type)
     {
@@ -138,16 +145,16 @@ class TainacanRelatedItems
     /**
      * Return the rating
      *
-     * @param [type] $item_id
-     * @param [type] $taxonomy
-     * @param [type] $term_weight
-     * @return void
+     * @param integer $item_id
+     * @param string $taxonomy
+     * @param float|integer $term_weight
+     * @return string
      */
     public function get_taxonomy_rating_sql($item_id, $taxonomy, $term_weight)
     {
         global $wpdb;
 
-        $terms = $this->get_post_taxonomy_terms($item_id, $taxonomy);
+        $terms = $this->get_item_taxonomy_terms($item_id, $taxonomy);
 
         $taxonomy_sql = "
             (
@@ -280,7 +287,8 @@ class TainacanRelatedItems
         return get_posts($params);
     }
 
-    function add_related_itens_above_footer() {
+    
+    public function add_related_itens_above_footer() {
         $collections_post_types = \Tainacan\Repositories\Repository::get_collections_db_identifiers();
         $current_post_type = get_post_type();
 			
@@ -316,7 +324,7 @@ class TainacanRelatedItems
         }
     }
 
-    function register_styles(){
+    public function register_styles(){
         wp_enqueue_style( 'related_items', plugins_url( 'assets/style.css' , __FILE__ ) );
     }
 
